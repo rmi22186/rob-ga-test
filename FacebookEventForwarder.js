@@ -75,11 +75,7 @@
         }
 
         function logEvent(event) {
-            try {
-                fbq('track', "PageView");
-            } catch (e) {
-                return 'Can\'t log event on forwarder: ' + name + ': ' + e;
-            }
+            fbq('track', "PageView");
         }
 
         this.init       = initForwarder;
