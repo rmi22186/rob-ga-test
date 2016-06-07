@@ -29,7 +29,7 @@
 
         function initForwarder(settings, service, testMode) {
             forwarderSettings = settings;
-            service           = reportingService;
+            reportingService = service;
             isTesting         = testMode;
             d = document;
 
