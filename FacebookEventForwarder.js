@@ -39,6 +39,7 @@
                     mParticle.ProductActionType.Checkout,
                     mParticle.ProductActionType.Purchase,
                     mParticle.ProductActionType.AddToCart,
+                    mParticle.ProductActionType.RemoveFromCart,
                     mParticle.ProductActionType.AddToWishlist,
                     mParticle.ProductActionType.ViewDetail
                 ];
@@ -101,8 +102,9 @@
                     event.ProductAction.ProductActionType &&
                     SupportedCommerceTypes.indexOf(event.ProductAction.ProductActionType) > -1) {
 
-                    var eventName;
-                    var params = {};
+                    var eventName,
+                        totalValue,
+                        params = cloneEventAttributes(event);
 
                     if (event.CurrencyCode) {
                         params['currency'] = event.CurrencyCode;
@@ -129,13 +131,16 @@
                         if (eventCategory) {
                             params['content_category'] = eventCategory;
                         }
+                        if (event.ProductAction.ProductActionType == mParticle.ProductActionType.Checkout && event.ProductAction.CheckoutStep) {
+                            params['checkout_step'] = event.ProductAction.CheckoutStep;
+                        }
                     }
 
                     if (event.ProductAction.ProductActionType == mParticle.ProductActionType.AddToCart ||
                         event.ProductAction.ProductActionType == mParticle.ProductActionType.AddToWishlist ||
                         event.ProductAction.ProductActionType == mParticle.ProductActionType.ViewDetail) {
 
-                        var totalValue = event.ProductAction.ProductList.reduce(function(sum, product){
+                        totalValue = event.ProductAction.ProductList.reduce(function(sum, product){
                             if (isNumeric(product.Price) && isNumeric(product.Quantity)) {
                                 sum += product.Price * product.Quantity;
                             }
@@ -171,6 +176,29 @@
                             return sum;
                         }, 0);
                         params['num_items'] = num_items;
+                    }
+                    else if (event.ProductAction.ProductActionType == mParticle.ProductActionType.RemoveFromCart) {
+                        eventName = 'RemoveFromCart';
+
+                        // remove from cart can be performed in 1 of 2 ways:
+                        // 1. mParticle.eCommerce.logProductEvent(), which contains event.ProductAction.TotalAmount
+                        // 2. mParticle.eCommerce.Cart.remove(), which does not contain event.ProductAction.TotalAmount
+                        // when there is no TotalAmount, a manual calculation must be done
+                        if (event.ProductAction.TotalAmount) {
+                            totalValue = event.ProductAction.TotalAmount;
+                        } else {
+                            totalValue = event.ProductAction.ProductList.reduce(function(sum, product) {
+                                if (isNumeric(product.TotalAmount)) {
+                                    sum += product.TotalAmount;
+                                }
+                                return sum;
+                            }, 0);
+                        }
+
+                        params['value'] = totalValue;
+
+                        fbq('trackCustom', eventName || 'customEvent', params);
+                        return true;
                     }
 
                     if (eventName) {
