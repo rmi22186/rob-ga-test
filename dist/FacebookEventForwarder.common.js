@@ -120,9 +120,7 @@ function isObject(val) {
                         totalValue,
                         params = cloneEventAttributes(event);
 
-                    if (event.CurrencyCode) {
-                        params['currency'] = event.CurrencyCode;
-                    }
+                    params['currency'] = event.CurrencyCode || 'USD';
 
                     if (event.EventName) {
                         params['content_name'] = event.EventName;
