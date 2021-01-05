@@ -77,7 +77,7 @@ jobs:
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-            # - name: publish to npm
+            - name: publish to npm
                 - run: git log
 
     # publish-npm:
