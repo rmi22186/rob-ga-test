@@ -9,21 +9,21 @@ on:
             - master
 
 jobs:
-    check-version:
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v2
+#     check-version:
+#         runs-on: ubuntu-latest
+#         steps:
+#             - uses: actions/checkout@v2
 
-            - name: Version Check
-              id: check
-              uses: EndBug/version-check@v1.3.0
+#             - name: Version Check
+#               id: check
+#               uses: EndBug/version-check@v1.3.0
 
-            - name: Has version changed?
-              if: steps.check.outputs.changed != 'true'
-              run: 'echo "No version change :/" && exit 1'
+#             - name: Has version changed?
+#               if: steps.check.outputs.changed != 'true'
+#               run: 'echo "No version change :/" && exit 1'
 
     build:
-        needs: check-version
+#         needs: check-version
         runs-on: ubuntu-latest
 
         strategy:
@@ -51,7 +51,7 @@ jobs:
                   path: dist
 
     commit:
-        needs: [build, check-version]
+        needs: [build]
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v2
@@ -78,7 +78,7 @@ jobs:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     publish-npm:
-        needs: [build, check-version, commit]
+        needs: [build, commit]
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v2
