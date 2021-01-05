@@ -1,14 +1,13 @@
 {
-    "name": "@mparticle/web-facebook-kit",
-    "version": "2.0.3",
-    "author": "mParticle Developers <developers@mparticle.com> (https://www.mparticle.com)",
-    "description": "mParticle integration sdk for facebook",
-    "main": "dist/FacebookEventForwarder.common.js",
-    "browser": "dist/FacebookEventForwarder.common.js",
+    "name": "rob-ga-test",
+    "version": "1.0.0",
+    "author": "rob <email@gmail.com>",
+    "description": "testing GA actions",
+    "main": "dist/test-ga.common.js",
     "files": [
-        "dist/FacebookEventForwarder.common.js"
+        "dist/test-ga.common.js"
     ],
-    "repository": "https://github.com/mparticle-integrations/mparticle-javascript-integration-facebook",
+    "repository": "https://github.com/rmi22186/rob-ga-test",
     "scripts": {
         "build": "rollup --config rollup.config.js",
         "watch": "rollup --config rollup.config.js -w",
@@ -31,7 +30,6 @@
     },
     "dependencies": {
         "isobject": "^4.0.0",
-        "@mparticle/web-sdk": "^2.11.1"
     },
     "license": "Apache-2.0"
 }

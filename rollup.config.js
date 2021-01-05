@@ -3,12 +3,12 @@ import commonjs from 'rollup-plugin-commonjs';
 
 export default [
     {
-        input: 'src/FacebookEventForwarder.js',
+        input: 'src/testing-ga.js',
         output: {
-            file: 'dist/FacebookEventForwarder.iife.js',
+            file: 'dist/test-ga.iife.js',
             format: 'iife',
             exports: 'named',
-            name: 'mpFacebookKit',
+            name: 'gatesting',
             strict: false
         },
         plugins: [
@@ -19,12 +19,12 @@ export default [
         ]
     },
     {
-        input: 'src/FacebookEventForwarder.js',
+        input: 'src/testing-ga.js',
         output: {
-            file: 'dist/FacebookEventForwarder.common.js',
+            file: 'dist/test-ga.common.js',
             format: 'cjs',
             exports: 'named',
-            name: 'mpFacebookKit',
+            name: 'gatesting',
             strict: false
         },
         plugins: [
