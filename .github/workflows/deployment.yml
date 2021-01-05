@@ -76,9 +76,9 @@ jobs:
                   add: 'dist/'
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            - run: git log
 
-            - id: publish to npm
-                run: git log
+            # - id: publish to npm
 
     # publish-npm:
     #     needs: [build, commit]
