@@ -10,6 +10,7 @@ jobs:
   myEvent:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - run: git log
-      - run: npm publish --dry-run
+      - uses: JS-DevTools/npm-publish@v1
+        with:
+          token: ${{ secrets.NPM_TOKEN }}
+          dry-run: true
