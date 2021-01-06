@@ -89,9 +89,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          fetch-depth: 2
+          fetch-depth: 0
 
-      - run: git checkout HEAD^
+
       - run: git log
       # - uses: actions/setup-node@v1
       #   with:
