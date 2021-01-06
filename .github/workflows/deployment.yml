@@ -91,7 +91,7 @@ jobs:
   #           env:
   #               GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  publish:
+#   publish:
 #     # needs: [build, check-version, commit]
 #     needs: [build]
 #     runs-on: ubuntu-latest
