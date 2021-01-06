@@ -76,3 +76,16 @@ jobs:
                   add: 'dist/'
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    publish:
+        needs: [build, check-version, commit]
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+              with:
+                fetch-depth: 0
+            - run: git log
+            - uses: actions/setup-node@v1
+                with:
+                    node-version: ${{ matrix.node-version }}
+                    registry-url: https://registry.npmjs.org/
