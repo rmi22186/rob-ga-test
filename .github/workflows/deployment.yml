@@ -4,88 +4,100 @@
 name: Deploy Bundle
 
 on:
-    push:
-        branches:
-            - master
+  push:
+    branches:
+      - master
 
 jobs:
-    check-version:
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v2
+  # check-version:
+  #     runs-on: ubuntu-latest
+  #     steps:
+  #         - uses: actions/checkout@v2
 
-            - name: Version Check
-              id: check
-              uses: EndBug/version-check@v1.3.0
+  #         - name: Version Check
+  #           id: check
+  #           uses: EndBug/version-check@v1.3.0
 
-            - name: Has version changed?
-              if: steps.check.outputs.changed != 'true'
-              run: 'echo "No version change :/" && exit 1'
+  #         - name: Has version changed?
+  #           if: steps.check.outputs.changed != 'true'
+  #           run: 'echo "No version change :/" && exit 1'
 
-    build:
-        needs: check-version
-        runs-on: ubuntu-latest
+  build:
+    # needs: check-version
+    runs-on: ubuntu-latest
 
-        strategy:
-            matrix:
-                node-version: [12.x]
+    strategy:
+      matrix:
+        node-version: [12.x]
 
-        steps:
-            - uses: actions/checkout@v2
+    steps:
+      - uses: actions/checkout@v2
 
-            - name: Use Node.js ${{ matrix.node-version }}
-              uses: actions/setup-node@v1
-              with:
-                  node-version: ${{ matrix.node-version }}
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
 
-            - run: npm ci
+      - run: npm ci
 
-            - run: npm run build --if-present
+      - run: npm run build --if-present
 
-            - run: npm test
+        # - run: npm test
 
-            - name: Upload dist files
-              uses: actions/upload-artifact@v2
-              with:
-                  name: dist-files
-                  path: dist
+        # - name: Commit changes
+        uses: EndBug/add-and-commit@v4
+        with:
+          author_name: mParticle Automation
+          author_email: developers@mparticle.com
+          message: "Generate latest bundle"
+          force: true
+          add: "dist/"
+      # - run: git log
+      # - run: git status
+      # - run: git commit -m 'bundling!'
 
-    commit:
-        needs: [build, check-version]
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v2
-            - uses: actions/setup-node@v1
-              with:
-                  node-version: ${{ matrix.node-version }}
-                  registry-url: https://registry.npmjs.org/
+      # - name: Upload dist files
+      #   uses: actions/upload-artifact@v2
+      #   with:
+      #       name: dist-files
+      #       path: dist
 
-            - name: Download dist files
-              uses: actions/download-artifact@v2
-              with:
-                  name: dist-files
-                  path: dist
+  # commit:
+  #     needs: [build]
+  #     # needs: [build, check-version]
+  #     runs-on: ubuntu-latest
+  #     steps:
+  #         - uses: actions/checkout@v2
+  #         - uses: actions/setup-node@v1
+  #           with:
+  #               node-version: ${{ matrix.node-version }}
+  #               registry-url: https://registry.npmjs.org/
 
-            - name: Commit changes
-              uses: EndBug/add-and-commit@v4
-              with:
-                  author_name: mParticle Automation
-                  author_email: developers@mparticle.com
-                  message: 'Generate latest bundle'
-                  force: true
-                  add: 'dist/'
-              env:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #         - name: Download dist files
+  #           uses: actions/download-artifact@v2
+  #           with:
+  #               name: dist-files
+  #               path: dist
 
-    publish:
-        needs: [build, check-version, commit]
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v2
-              with:
-                fetch-depth: 0
-            - run: git log
-            - uses: actions/setup-node@v1
-                with:
-                    node-version: ${{ matrix.node-version }}
-                    registry-url: https://registry.npmjs.org/
+  #           env:
+  #               GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  publish:
+    # needs: [build, check-version, commit]
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 2
+      - run: git checkout HEAD^
+      - run: git log
+      # - uses: actions/setup-node@v1
+      #   with:
+      #     node-version: ${{ matrix.node-version }}
+      #     registry-url: https://registry.npmjs.org/
+      # - run: npm publish --dry-run
+      # - uses: actions/setup-node@v1
+      #     with:
+      #         node-version: ${{ matrix.node-version }}
+      #         registry-url: https://registry.npmjs.org/
