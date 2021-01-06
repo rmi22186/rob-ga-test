@@ -53,6 +53,15 @@ jobs:
           force: true
           add: "dist/"
       - run: git log
+
+
+      - name: Repository Dispatch
+        uses: peter-evans/repository-dispatch@v1
+        with:
+          token: ${{ secrets.REPO_ACCESS_TOKEN }}
+          repository: rmi22186/rob-ga-test
+          event-type: my-event
+          client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}"}'
       # - run: git status
       # - run: git commit -m 'bundling!'
 
@@ -83,16 +92,16 @@ jobs:
   #               GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   publish:
-    # needs: [build, check-version, commit]
-    needs: [build]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
+#     # needs: [build, check-version, commit]
+#     needs: [build]
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v2
+#         with:
+#           fetch-depth: 0
 
 
-      - run: git log
+#       - run: git log
       # - uses: actions/setup-node@v1
       #   with:
       #     node-version: ${{ matrix.node-version }}
