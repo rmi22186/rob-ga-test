@@ -15,4 +15,4 @@ jobs:
         with:
           ref: ${{ github.event.client_payload.ref }}
       - run: echo ${{ github.event.client_payload.sha }}
-      - npm publish --dry-run
+      - run: npm publish --dry-run
