@@ -49,7 +49,7 @@ jobs:
         with:
           author_name: mParticle Automation
           author_email: developers@mparticle.com
-          message: "Generate latest bundle"
+          message: "durrrgh"
           force: true
           add: "dist/"
       - run: git log
