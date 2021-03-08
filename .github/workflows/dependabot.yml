@@ -12,7 +12,10 @@ jobs:
               uses: actions/checkout@v2
 
             - name: Echo I am here
-              run: echo 'I am here, ${{ github.event.repository}}'
+              run: |
+                  echo 'I am here
+                  echo ${{ github.event.repository}}'
+              
 
 #     android-build-and-test:
 #         if: ${{ github.event.repository.name.contains('mparticle-android-sdk') }}
