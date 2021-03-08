@@ -4,7 +4,7 @@ on: [pull_request]
 
 jobs:
     web-build-and-test:
-        if: github.event.repository.name.contains('rob-ga-test')
+        if: contains(github.event.repository.name, 'rob-ga-test')
         name: Echo web
         runs-on: ubuntu-latest
         steps:
