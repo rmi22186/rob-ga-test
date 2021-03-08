@@ -3,7 +3,13 @@ name: Dependabot Auto Merge
 on: [pull_request]
 
 jobs:
+    is-dependabot:
+        name: Determine if dependabot-initiated PR
+        if: ${{ github.actor == 'rmi22186' }}
+        runs-on: ubunti-latest
+        
     web-build-and-test:
+        needs: is-dependabot
         if: contains(github.event.repository.name, 'rob-ga-test')
         name: Echo web
         runs-on: ubuntu-latest
@@ -14,7 +20,7 @@ jobs:
             - name: Echo I am here
               run: |
                   echo 'I am here
-                  echo ${{ github.event.repository}}'
+                  echo ${{ github.event.repository.name}}'
               
 
 #     android-build-and-test:
@@ -53,12 +59,12 @@ jobs:
 #             - name: Run Tests
 #               run: npm test
 
-    automerge:
-        needs: web-build-and-test
-        runs-on: ubuntu-latest
-        steps:
-            - uses: fastify/github-action-merge-dependabot@v1
-              if: ${{ github.actor == 'dependabot[bot]' && github.event_name == 'pull_request' }}
-              with:
-                  github-token: ${{secrets.github_token}}
-                  merge-method: 'squash'
+#     automerge:
+#         needs: web-build-and-test
+#         runs-on: ubuntu-latest
+#         steps:
+#             - uses: fastify/github-action-merge-dependabot@v1
+#               if: ${{ github.actor == 'dependabot[bot]' && github.event_name == 'pull_request' }}
+#               with:
+#                   github-token: ${{secrets.github_token}}
+#                   merge-method: 'squash'
