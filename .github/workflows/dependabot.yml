@@ -7,20 +7,19 @@ jobs:
         name: Determine if dependabot-initiated PR
         if: ${{ github.actor == 'rmi22186' }}
         runs-on: ubunti-latest
-        
-    web-build-and-test:
-        needs: is-dependabot
-        if: contains(github.event.repository.name, 'rob-ga-test')
-        name: Echo web
-        runs-on: ubuntu-latest
         steps:
             - name: Git checkout
               uses: actions/checkout@v2
 
-            - name: Echo I am here
+            - name: Echo github.actor
               run: |
-                  echo 'I am here
-                  echo ${{ github.event.repository.name}}'
+                  echo 'Github actor: ${{ github.actor }}'
+            - name: Test remote
+              uses: convictional/trigger-workflow-and-wait@v1.3.0
+              with:
+                  owner: rmi22186
+                  repo: rob-changelog-release-public
+                  workfow_file_name: android-bridge-tests.yml
               
 
 #     android-build-and-test:
