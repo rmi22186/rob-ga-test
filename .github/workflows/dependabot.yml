@@ -19,7 +19,7 @@ jobs:
               with:
                   owner: rmi22186
                   repo: rob-changelog-release-public
-                  github_token: ${{ secrets.GITHUB_TOKEN }}
+                  github_token: ${{ secrets.WORKFLOW_TRIGGER }}
                   workflow_file_name: android-bridge-tests.yml
               
 
