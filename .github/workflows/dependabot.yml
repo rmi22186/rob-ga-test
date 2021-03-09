@@ -6,7 +6,7 @@ jobs:
     is-dependabot:
         name: Determine if dependabot-initiated PR
         if: ${{ github.actor == 'rmi22186' }}
-        runs-on: ubunti-latest
+        runs-on: ubuntu-latest
         steps:
             - name: Git checkout
               uses: actions/checkout@v2
