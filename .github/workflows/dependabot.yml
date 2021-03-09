@@ -19,7 +19,7 @@ jobs:
               with:
                   owner: rmi22186
                   repo: rob-changelog-release-public
-                  workfow_file_name: android-bridge-tests.yml
+                  workflow_file_name: android-bridge-tests.yml
               
 
 #     android-build-and-test:
